@@ -607,7 +607,6 @@ function initGame(){
   document.getElementById('hud').style.display='flex';
   document.getElementById('minimap').style.display='block';
   gameActive=true;
-  document.getElementById('zoomBtns').style.display='flex';
 }
 
 function randomNexusPositions(){
@@ -2406,7 +2405,6 @@ function drawWorld(){
 /* ═══════════════ MAIN LOOP ═══════════════ */
 function update(dt){
   if(!gameActive&&raceState!=='warmup'&&raceState!=='countdown')return;
-  if(!gameActive)return;
   if(alertTimer>0){alertTimer-=dt;if(alertTimer<=0)document.getElementById('alertBar').classList.remove('show');}
   // Warmup countdown
   if(raceState==='warmup'){
