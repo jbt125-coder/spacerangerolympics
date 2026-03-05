@@ -29,7 +29,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 #minimap{position:fixed;top:10px;left:10px;width:130px;height:98px;background:rgba(0,5,15,0.88);border:1px solid rgba(0,212,255,0.25);border-radius:6px;z-index:20;overflow:hidden;display:none;}
 #mmCvs{width:130px;height:98px;}
 #mmLbl{position:absolute;top:2px;left:4px;font-size:7px;letter-spacing:2px;color:rgba(0,212,255,0.4);}
-#alertBar{position:fixed;top:76px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:25;opacity:0;transition:opacity 0.2s;white-space:nowrap;}
+#alertBar{position:fixed;top:76px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:25;opacity:0;transition:opacity 0.2s;white-space:normal;text-align:center;max-width:80vw;}
 #alertBar.show{opacity:1;}
 #alertTxt{font-size:clamp(11px,2.8vw,16px);font-weight:700;letter-spacing:3px;color:#ffe800;text-shadow:0 0 24px rgba(255,230,0,1),0 0 50px rgba(255,200,0,0.6);}
 #cogBtn{position:fixed;top:10px;left:50%;transform:translateX(-50%);pointer-events:all;z-index:21;background:transparent;border:1px solid rgba(0,212,255,0.3);border-radius:50%;width:24px;height:24px;font-size:13px;color:rgba(0,212,255,0.6);cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -68,7 +68,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 /* Title */
 #titleScreen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:101;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;padding-bottom:0;}
 #titleCvs{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-.tbtn{position:absolute;bottom:15%;left:50%;transform:translateX(-50%);z-index:2;background:rgba(0,0,0,0.6);border:2px solid rgba(0,212,255,0.5);font-family:'Orbitron',monospace;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;padding:14px 40px;cursor:pointer;border-radius:4px;color:#00d4ff;margin-top:14px;}
+.tbtn{position:absolute;left:50%;transform:translateX(-50%);z-index:2;background:rgba(0,0,0,0.6);border:2px solid rgba(0,212,255,0.5);font-family:'Orbitron',monospace;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;padding:14px 40px;cursor:pointer;border-radius:4px;color:#00d4ff;white-space:nowrap;}
 .tsub{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:2;font-size:clamp(16px,2.4vw,22px);letter-spacing:4px;color:#ffffff;text-shadow:0 0 20px rgba(0,212,255,1),0 0 50px rgba(0,212,255,0.8),0 0 80px rgba(0,212,255,0.4);}
 /* Win screen */
 #winScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.93);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;}
@@ -130,13 +130,6 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
   </div>
 </div></div>
 
-<!-- Zoom buttons -->
-
-<div id="zoomBtns" style="position:fixed;bottom:20px;right:20px;z-index:22;display:none;flex-direction:column;gap:6px;">
-  <button id="zoomIn"  style="width:36px;height:36px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,212,255,0.4);border-radius:6px;color:#00d4ff;font-size:18px;cursor:pointer;">+</button>
-  <button id="zoomOut" style="width:36px;height:36px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,212,255,0.4);border-radius:6px;color:#00d4ff;font-size:18px;cursor:pointer;">&#x2212;</button>
-</div>
-
 <!-- Shop -->
 
 <div id="shopOv"><div id="shopCard">
@@ -150,9 +143,21 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <div id="titleScreen">
   <canvas id="titleCvs"></canvas>
-  <button class="tbtn" id="btnTutorial" style="bottom:25%;">📖 HOW TO PLAY</button>
-  <button class="tbtn" id="btnPlay">🚀 LAUNCH</button>
-  <div class="tsub blink">COLLECT ALL 6 WARP CORES — FIRST TO WIN! 🏅</div>
+  <button class="tbtn" id="btnTutorial" style="top:62%;">📖 HOW TO PLAY</button>
+  <button class="tbtn" id="btnPlay" style="top:72%;">🚀 LAUNCH</button>
+  <div class="tsub" style="top:84%;bottom:auto;text-align:center;line-height:1.7;color:#00d4ff;text-shadow:0 0 14px rgba(0,212,255,0.8),0 0 30px rgba(0,212,255,0.4);">COLLECT ALL 6 WARP CORES<br>FIRST TO WIN! 🏅</div>
+</div>
+
+<!-- Audio Enable Screen -->
+
+<div id="audioScreen" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:150;background:rgba(0,0,10,0.97);font-family:Orbitron,monospace;">
+  <canvas id="audioBgCvs" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:1;">
+    <div style="font-size:clamp(16px,4vw,36px);font-weight:900;color:#00d4ff;text-shadow:0 0 30px rgba(0,212,255,0.9);letter-spacing:4px;margin-bottom:16px;">🚀 SPACE RANGER OLYMPICS</div>
+    <div style="font-size:clamp(28px,6vw,52px);font-weight:900;color:#ffdd00;text-shadow:0 0 40px rgba(255,220,0,0.9),0 0 80px rgba(255,220,0,0.4);letter-spacing:6px;margin-bottom:12px;">ENABLE AUDIO</div>
+    <div style="font-size:clamp(10px,1.8vw,14px);color:#88aacc;letter-spacing:2px;margin-bottom:40px;">TAP TO ACTIVATE SOUND AND START THE RACE</div>
+    <button id="btnEnableAudio" style="font-family:Orbitron,monospace;font-size:clamp(13px,2.5vw,18px);letter-spacing:4px;padding:18px 60px;background:rgba(0,0,0,0.7);border:2px solid rgba(0,212,255,0.8);color:#00d4ff;cursor:pointer;border-radius:4px;box-shadow:0 0 20px rgba(0,212,255,0.4);animation:skipGlow 2s ease-in-out infinite;">🔊 ENABLE AUDIO + LAUNCH</button>
+  </div>
 </div>
 
 <!-- Tutorial Overlay -->
@@ -429,8 +434,8 @@ function spawnDeputy(){
   });
 }
 document.getElementById('shopClose').onclick=function(){shopOpen=false;shopCooldown=2000;document.getElementById('shopOv').classList.remove('show');};
-document.getElementById('zoomIn').addEventListener('click',function(){CAM.zoom=Math.min(1.2,CAM.zoom+0.08);});
-document.getElementById('zoomOut').addEventListener('click',function(){CAM.zoom=Math.max(0.08,CAM.zoom-0.08);});
+
+
 
 /* ═══════════════ INIT GAME ═══════════════ */
 function initGame(){
@@ -1892,17 +1897,17 @@ document.getElementById('btnTitle').onclick=function(){document.getElementById('
 // ---- Tutorial overlay ----
 var TUT_CARDS=[
   {icon:'💥',title:'PRE-RACE WARMUP',color:'#ffdd00',
-   body:'You get 2 minutes to blast asteroids and stock up on supplies. '+'Cores are visible but locked \xe2\x80\x94 the race hasn\'t started yet. Visit the Starport to buy upgrades!'},
+   body:'You get 2 minutes to blast asteroids and stock up on supplies. Cores are visible but locked because the race has not started yet. Visit the Starport to buy upgrades!'},
   {icon:'🔵',title:'GRAB A WARP CORE',color:'#00d4ff',
-   body:'When the race starts, grab a Warp Core from your pad or the map. '+'Fly it to the matching color Warp Nexus ring on the map to score a lap.'},
+   body:'When the race starts, grab a Warp Core from your pad. Fly it to the matching color Warp Nexus ring on the map to score a lap.'},
   {icon:'🏁',title:'DELIVER TO WIN LAPS',color:'#44ffaa',
-   body:'Each Warp Core delivered to your Nexus = 1 lap. You need 6 laps to win. '+'Opponents are racing too \xe2\x80\x94 be fast!'},
+   body:'Each Warp Core delivered to a Nexus = 1 lap. You need 6 laps to win. Opponents are racing too so be fast!'},
   {icon:'🌀',title:'LAP 2: BLACK HOLE',color:'#cc44ff',
-   body:'After 2 laps a Black Hole spawns near your pad. Use HOLD FIRE to grab it with your tractor beam, '+'then haul it to the Central Spaceport in the middle of the map.'},
+   body:'After 2 laps a Black Hole spawns near your pad. Use HOLD FIRE to grab it with your tractor beam, then haul it to the Central Spaceport.'},
   {icon:'💀',title:'LAP 4: BOSS ALIEN',color:'#ff4444',
-   body:'After 4 laps the Boss Alien appears in the top-right. Destroy it before you can finish the race! '+'Upgrade your weapons at the Starport first.'},
+   body:'After 4 laps the Boss Alien appears in the top-right. Destroy it before you can finish the race!'},
   {icon:'🏆',title:'HOME STRETCH',color:'#ffaa00',
-   body:'Deliver the last 2 cores to your Nexus to WIN! First racer to 6 laps takes the championship. '+'GOOD LUCK SPACE RANGER!'}
+   body:'Deliver the last 2 cores to the Nexus to WIN! First racer to 6 laps takes the championship. GOOD LUCK SPACE RANGER!'}
 ];
 function renderTutorial(){
   var el=document.getElementById('tutCards');el.innerHTML='';
@@ -1941,7 +1946,28 @@ function showTitle(){
   document.getElementById('hud').style.display='none';
   document.getElementById('minimap').style.display='none';
 }
-document.getElementById('btnPlay').onclick=function(){unlockAudio();document.getElementById('titleScreen').style.display='none';startGame();};
+document.getElementById('btnPlay').onclick=function(){
+  // Show audio enable screen first
+  document.getElementById('titleScreen').style.display='none';
+  document.getElementById('audioScreen').style.display='block';
+  // Animate stars on audio screen
+  var abc=document.getElementById('audioBgCvs');
+  var abx=abc.getContext('2d');
+  var abs2=[];for(var i=0;i<180;i++)abs2.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,s:Math.random()*0.002+0.0005,t:Math.random()*Math.PI*2});
+  function animAudio(){
+    abc.width=window.innerWidth;abc.height=window.innerHeight;
+    abx.clearRect(0,0,abc.width,abc.height);
+    abs2.forEach(function(s){s.t+=s.s;abx.beginPath();abx.arc(s.x*abc.width,s.y*abc.height,s.r,0,Math.PI*2);abx.fillStyle='rgba(255,255,255,'+(0.25+0.25*Math.sin(s.t))+')';abx.fill();});
+    if(document.getElementById('audioScreen').style.display!=='none')requestAnimationFrame(animAudio);
+  }
+  requestAnimationFrame(animAudio);
+};
+document.getElementById('btnEnableAudio').onclick=function(){
+  unlockAudio();
+  document.getElementById('audioScreen').style.display='none';
+  startGame();
+};
+
 
 function startGame(){
   initGame();
@@ -2319,7 +2345,7 @@ function drawWorld(){
       ctx.fillStyle='rgba(0,0,0,0.55)';ctx.fillRect(sw/2-140,14,280,42);
       ctx.font='bold 18px Orbitron,monospace';ctx.textAlign='center';
       ctx.fillStyle='#ffdd00';ctx.shadowColor='rgba(255,220,0,0.9)';ctx.shadowBlur=14;
-      ctx.fillText('🕐 WARMUP  '+secsLeft+'s remaining', sw/2, 43);
+      ctx.fillText(secsLeft+'s remaining', sw/2, 43);
       ctx.shadowBlur=0;
     } else {
       var bigTxt=countdownPhase>0?String(countdownPhase):'GO!';
