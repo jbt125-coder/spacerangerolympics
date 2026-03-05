@@ -248,10 +248,58 @@ var ytPlayer=null,ytReady=false,ytPend=false;
 var DEFAULT_YT='https://youtube.com/playlist?list=PLVWEzQMtQoqMPRn_AMTlfrhYE-bN28lIb&si=_MIKAQR0PF2z35z4';
 function unlockAudio(){if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();audioOk=true;}
 function sfxTone(f,d,v,t){if(!audioOk||!actx)return;try{var o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime((v||0.2)*sfxV,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.start();o.stop(actx.currentTime+d);}catch(e){}}
-function sfxBoom(){if(!audioOk||!actx)return;try{var buf=actx.createBuffer(1,Math.floor(actx.sampleRate*0.35),actx.sampleRate);var d=buf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.55);var src=actx.createBufferSource(),g=actx.createGain(),f=actx.createBiquadFilter();f.type='lowpass';f.frequency.value=300;src.buffer=buf;src.connect(f);f.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(sfxV*0.7,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.35);src.start();}catch(e){}}
+function sfxBoom(){if(!audioOk||!actx)return;
+  try{var dur=0.75;
+  var buf=actx.createBuffer(1,Math.floor(actx.sampleRate*dur),actx.sampleRate);
+  var d=buf.getChannelData(0);
+  for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.45);
+  var src=actx.createBufferSource(),g=actx.createGain(),filt=actx.createBiquadFilter();
+  filt.type='lowpass';filt.frequency.value=150;filt.Q.value=2;
+  src.buffer=buf;src.connect(filt);filt.connect(g);g.connect(actx.destination);
+  g.gain.setValueAtTime(sfxV*0.9,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+  src.start();}catch(e){}}
 function sfxPickup(){sfxTone(500,0.09,0.3,'sine');setTimeout(function(){sfxTone(800,0.08,0.25,'sine');},70);}
 function sfxDeposit(){sfxTone(300,0.06,0.3,'sine');setTimeout(function(){sfxTone(600,0.08,0.3,'sine');},60);setTimeout(function(){sfxTone(1000,0.12,0.3,'sine');},130);}
-function sfxShoot(){sfxTone(400,0.06,0.25,'sawtooth');}
+function sfxShoot(){
+  if(!audioOk||!actx)return;
+  try{var o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);
+  o.type='sine';o.frequency.setValueAtTime(700,actx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(180,actx.currentTime+0.10);
+  g.gain.setValueAtTime(sfxV*0.18,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.11);
+  o.start();o.stop(actx.currentTime+0.11);}catch(e){}
+}
+var _thrActive=false,_thrNode=null,_thrGain=null;
+function sfxThruster(){
+  if(!audioOk||!actx||_thrActive)return;
+  try{
+    _thrNode=actx.createOscillator();_thrGain=actx.createGain();
+    var ff=actx.createBiquadFilter();ff.type='lowpass';ff.frequency.value=160;
+    _thrNode.connect(ff);ff.connect(_thrGain);_thrGain.connect(actx.destination);
+    _thrNode.type='sawtooth';_thrNode.frequency.value=65;
+    _thrGain.gain.setValueAtTime(0,actx.currentTime);
+    _thrGain.gain.linearRampToValueAtTime(sfxV*0.85,actx.currentTime+0.03);
+    _thrGain.gain.linearRampToValueAtTime(sfxV*0.55,actx.currentTime+0.14);
+    _thrGain.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.30);
+    _thrNode.start();_thrNode.stop(actx.currentTime+0.32);
+    _thrActive=true;
+    setTimeout(function(){_thrActive=false;_thrNode=null;_thrGain=null;},340);
+  }catch(e){_thrActive=false;}
+}
+function sfxAsteroidBoom(){
+  if(!audioOk||!actx)return;
+  try{var dur=0.40;
+  var buf=actx.createBuffer(1,Math.floor(actx.sampleRate*dur),actx.sampleRate);
+  var d=buf.getChannelData(0);
+  for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.65);
+  var src=actx.createBufferSource(),gg=actx.createGain(),filt=actx.createBiquadFilter();
+  filt.type='lowpass';filt.frequency.value=280;filt.Q.value=2;
+  src.buffer=buf;src.connect(filt);filt.connect(gg);gg.connect(actx.destination);
+  gg.gain.setValueAtTime(sfxV*0.6,actx.currentTime);
+  gg.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+  src.start();}catch(e){}
+}
 function sfxCountdownBeep(n){
   // n=3,2,1 -> short rising beep; n=0 -> long GO chord
   if(!audioOk||!actx)return;
@@ -839,7 +887,7 @@ function updatePlayer(dt){
   var thrusting=keys['ArrowUp']||keys['KeyW']||btn.thrust;
   var turboMult=[1,2,3,4][permUpgrades.turboLevel];
   var accel=0.28*turboMult;
-  if(thrusting){ship.vx+=Math.cos(ship.angle)*accel;ship.vy+=Math.sin(ship.angle)*accel;}
+  if(thrusting){ship.vx+=Math.cos(ship.angle)*accel;ship.vy+=Math.sin(ship.angle)*accel;sfxThruster();}
   var drag=0.96;
   ship.vx*=drag;ship.vy*=drag;
   var maxSpd=5.5*turboMult;
@@ -1513,7 +1561,7 @@ function updateProjectiles(dt){
           spawnParts(ast.x,ast.y,12,['#bbbbbb','#cccccc','#ffddaa'],3);
           credits+=15;updateCreditsHUD();
         }
-        sfxBoom();break;
+        sfxAsteroidBoom();break;
       }
     }
   }  // end bullets loop
@@ -1767,21 +1815,39 @@ document.getElementById('btnTitle').onclick=function(){document.getElementById('
     {type:'oval',   col:'#ff2222', glow:'rgba(255,34,34,0.6)'}      // red
   ];
 
-  function drawShape(ctx2,sx,sy,size,shp,col,glow,pulse){
-    ctx2.save();ctx2.translate(sx,sy);
-    ctx2.shadowColor=glow;ctx2.shadowBlur=18+8*pulse;
-    ctx2.strokeStyle=col;ctx2.lineWidth=size*0.14;ctx2.fillStyle='rgba(0,0,8,0.7)';
+  function drawShape(ctx2,sx,sy,size,shp,col,glow,pulse,rot){
+    ctx2.save();ctx2.translate(sx,sy);ctx2.rotate(rot||0);
+    // Outer haze ring - parse r,g,b from glow string safely
+    var haze=size*(1.5+0.2*pulse);
+    var hazeCol=(function(g){var m=g.match(/rgba?\((\d+),(\d+),(\d+)/);return m?'rgba('+m[1]+','+m[2]+','+m[3]+',0.16)':'rgba(255,255,255,0.1)'})(glow);
+    try{
+      var hg=ctx2.createRadialGradient(0,0,size*0.5,0,0,haze);
+      hg.addColorStop(0,hazeCol);
+      hg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx2.beginPath();ctx2.arc(0,0,haze,0,Math.PI*2);
+      ctx2.fillStyle=hg;ctx2.fill();
+    }catch(e){}
+    // Inner glow pass (thick, blurred)
+    ctx2.shadowColor=glow;ctx2.shadowBlur=28+14*pulse;
+    ctx2.strokeStyle=col;ctx2.lineWidth=size*0.13;
+    ctx2.beginPath();
     if(shp==='circle'){
-      ctx2.beginPath();ctx2.arc(0,0,size,0,Math.PI*2);ctx2.fill();ctx2.stroke();
+      ctx2.arc(0,0,size,0,Math.PI*2);
     } else if(shp==='square'){
-      var s2=size*0.88;ctx2.beginPath();ctx2.rect(-s2,-s2,s2*2,s2*2);ctx2.fill();ctx2.stroke();
+      var s2=size*0.88;ctx2.rect(-s2,-s2,s2*2,s2*2);
     } else if(shp==='hexagon'){
-      ctx2.beginPath();for(var k=0;k<6;k++){var a=(k/6)*Math.PI*2-Math.PI/6;ctx2.lineTo(Math.cos(a)*size,Math.sin(a)*size);}ctx2.closePath();ctx2.fill();ctx2.stroke();
+      var a0=(0/6)*Math.PI*2-Math.PI/6;ctx2.moveTo(Math.cos(a0)*size,Math.sin(a0)*size);for(var k=1;k<6;k++){var a=(k/6)*Math.PI*2-Math.PI/6;ctx2.lineTo(Math.cos(a)*size,Math.sin(a)*size);}ctx2.closePath();
     } else if(shp==='triangle'){
-      ctx2.beginPath();ctx2.moveTo(0,-size);ctx2.lineTo(size*0.87,size*0.5);ctx2.lineTo(-size*0.87,size*0.5);ctx2.closePath();ctx2.fill();ctx2.stroke();
+      ctx2.moveTo(0,-size);ctx2.lineTo(size*0.87,size*0.5);ctx2.lineTo(-size*0.87,size*0.5);ctx2.closePath();
     } else if(shp==='oval'){
-      ctx2.beginPath();ctx2.ellipse(0,0,size*1.35,size*0.75,0,0,Math.PI*2);ctx2.fill();ctx2.stroke();
+      ctx2.ellipse(0,0,size*1.35,size*0.75,0,0,Math.PI*2);
     }
+    ctx2.stroke();
+    // Bright core pass (thin, sharp)
+    ctx2.shadowBlur=6;
+    ctx2.strokeStyle='rgba(255,255,255,0.55)';
+    ctx2.lineWidth=size*0.035;
+    ctx2.stroke();
     ctx2.restore();
   }
 
@@ -1802,58 +1868,20 @@ document.getElementById('btnTitle').onclick=function(){document.getElementById('
     var ringY=h*0.445;
     var rowOff=shapeSize*0.52; // vertical alternation
 
-    // Olympic rings -- proper 4-pass interlink
-    var shapeYBase = [];
-    for (var i = 0; i < SHAPES.length; i++) shapeYBase.push(i % 2 === 0 ? ringY : ringY + rowOff);
-    var shapeX = [];
-    for (var i = 0; i < SHAPES.length; i++) shapeX.push(startX + i * gap);
-
-    function midX(a, b) { return (shapeX[a] + shapeX[b]) / 2; }
-
-    // Pass 1: right half of even shapes (goes BEHIND next odd shape)
-    for (var i = 0; i < SHAPES.length; i += 2) {
-      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
-      var pulse = Math.sin(logoT + i * 1.1);
-      var rx = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
-      tx.save();
-      tx.beginPath(); tx.rect(rx, -9999, 9999, 99999); tx.clip();
-      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
-      tx.restore();
-    }
-
-    // Pass 2: odd shapes clipped to NOT overlap even shape on their RIGHT
-    for (var i = 1; i < SHAPES.length; i += 2) {
-      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
-      var pulse = Math.sin(logoT + i * 1.1);
-      var rxOdd = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
-      tx.save();
-      tx.beginPath(); tx.rect(-9999, -9999, rxOdd + 9999, 99999); tx.clip();
-      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
-      tx.restore();
-    }
-
-    // Pass 3: left half of even shapes (IN FRONT of previous odd shape)
-    for (var i = 0; i < SHAPES.length; i += 2) {
-      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
-      var pulse = Math.sin(logoT + i * 1.1);
-      var lx = (i > 0) ? midX(i - 1, i) : sx - gap;
-      var rx = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
-      tx.save();
-      tx.beginPath(); tx.rect(lx, -9999, rx - lx, 99999); tx.clip();
-      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
-      tx.restore();
-    }
-
-    // Pass 4: right portion of odd shapes IN FRONT of even shape to their right
-    for (var i = 1; i < SHAPES.length; i += 2) {
-      if (i + 1 >= SHAPES.length) continue;
-      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
-      var pulse = Math.sin(logoT + i * 1.1);
-      var rx = midX(i, i + 1);
-      tx.save();
-      tx.beginPath(); tx.rect(rx, -9999, 9999, 99999); tx.clip();
-      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
-      tx.restore();
+    // Floating space shapes -- each bobs, drifts, rotates independently
+    for (var i = 0; i < SHAPES.length; i++) {
+      var sh = SHAPES[i];
+      // Each shape has its own phase offset for independent motion
+      var phase = i * 1.27;
+      var bobY   = Math.sin(logoT * 0.9 + phase) * shapeSize * 0.18;
+      var bobX   = Math.cos(logoT * 0.6 + phase) * shapeSize * 0.08;
+      var rot    = logoT * (0.004 + i * 0.0015) * (i % 2 === 0 ? 1 : -1);
+      var pulse  = Math.sin(logoT * 1.1 + phase);
+      // Alternate two rows with gentle vertical separation
+      var baseY  = i % 2 === 0 ? ringY : ringY + rowOff * 0.6;
+      var sx     = startX + i * gap + bobX;
+      var sy     = baseY + bobY;
+      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse, rot);
     }
 
     // ── TITLE TEXT ──
@@ -1965,7 +1993,18 @@ document.getElementById('btnPlay').onclick=function(){
 document.getElementById('btnEnableAudio').onclick=function(){
   unlockAudio();
   document.getElementById('audioScreen').style.display='none';
+  ytPend=true; // onReady handler fires playVideo automatically when player loads
   startGame();
+  // If player already ready, play right now
+  if(ytReady&&ytPlayer&&ytPlayer.playVideo){
+    try{
+      ytPlayer.unMute();
+      ytPlayer.setVolume(Math.round(musV*100));
+      ytPlayer.playVideo();
+      ytPend=false;
+      document.getElementById('mStatus').textContent='▶ Playing';
+    }catch(e){}
+  }
 };
 
 
