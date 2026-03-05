@@ -178,7 +178,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <!-- Win -->
 
-<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;top:8%;left:50%;transform:translateX(-50%);z-index:999;padding:16px 60px;font-family:Orbitron,monospace;font-size:clamp(14px,2.5vw,20px);letter-spacing:6px;color:rgba(210,100,255,1);background:rgba(8,0,18,0.85);border:2px solid rgba(180,0,255,0.8);border-radius:4px;cursor:pointer;box-shadow:0 0 24px rgba(180,0,255,0.6);animation:skipGlow 2.5s ease-in-out infinite;">SKIP</button>
+<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:3%;right:3%;z-index:999;padding:8px 22px;font-family:Orbitron,monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:4px;color:rgba(180,0,255,0.55);background:rgba(0,0,0,0.3);border:1px solid rgba(180,0,255,0.3);border-radius:4px;cursor:pointer;animation:skipGlow 3s ease-in-out infinite;">SKIP</button>
 
 <style>@keyframes skipGlow{0%,100%{box-shadow:0 0 6px rgba(0,212,255,0.2);border-color:rgba(0,212,255,0.25);}50%{box-shadow:0 0 22px rgba(0,212,255,0.6);border-color:rgba(0,212,255,0.7);}}</style>
 
@@ -2524,15 +2524,7 @@ if(isTouchDev){
 
 resize();lastTime=performance.now();requestAnimationFrame(loop);
 // Victory lap: ANY click/touch anywhere exits
-document.addEventListener('click',function(e){
-  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
-});
-document.addEventListener('touchend',function(e){
-  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
-},false);
-document.addEventListener('keydown',function(e){
-  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
-});
+// Victory skip: button onclick handles it
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
 </script>
 
