@@ -178,7 +178,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <!-- Win -->
 
-<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:22%;left:50%;transform:translateX(-50%);z-index:200;padding:14px 56px;font-family:Orbitron,monospace;font-size:clamp(13px,2.5vw,18px);letter-spacing:6px;color:rgba(210,100,255,0.85);background:rgba(8,0,18,0.7);border:1.5px solid rgba(180,0,255,0.5);border-radius:4px;cursor:pointer;animation:skipGlow 2.5s ease-in-out infinite;">SKIP</button>
+<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;top:8%;left:50%;transform:translateX(-50%);z-index:999;padding:16px 60px;font-family:Orbitron,monospace;font-size:clamp(14px,2.5vw,20px);letter-spacing:6px;color:rgba(210,100,255,1);background:rgba(8,0,18,0.85);border:2px solid rgba(180,0,255,0.8);border-radius:4px;cursor:pointer;box-shadow:0 0 24px rgba(180,0,255,0.6);animation:skipGlow 2.5s ease-in-out infinite;">SKIP</button>
 
 <style>@keyframes skipGlow{0%,100%{box-shadow:0 0 6px rgba(0,212,255,0.2);border-color:rgba(0,212,255,0.25);}50%{box-shadow:0 0 22px rgba(0,212,255,0.6);border-color:rgba(0,212,255,0.7);}}</style>
 
@@ -1093,12 +1093,27 @@ function drawDeputy(dep){
 
 function nearestEnemy(x,y){
   var best=null,bd=99999;
+  // AI ships
   for(var i=0;i<aiShips.length;i++){
     var a=aiShips[i];if(!a.alive)continue;
     var d=dst(x,y,a.x,a.y);if(d<bd){bd=d;best=a;}
   }
+  // Alien patrollers
   for(var i=0;i<alienPatrollers.length;i++){
     var a=alienPatrollers[i];if(!a.alive)continue;
+    var d=dst(x,y,a.x,a.y);if(d<bd){bd=d;best=a;}
+  }
+  // Main boss
+  if(boss&&boss.alive){
+    var d=dst(x,y,boss.x,boss.y);if(d<bd){bd=d;best=boss;}
+  }
+  // Victory boss
+  if(victoryBoss&&victoryBoss.active&&victoryBoss.alive){
+    var d=dst(x,y,victoryBoss.x,victoryBoss.y);if(d<bd){bd=d;best=victoryBoss;}
+  }
+  // Asteroids
+  for(var i=0;i<asteroids.length;i++){
+    var a=asteroids[i];if(!a.alive)continue;
     var d=dst(x,y,a.x,a.y);if(d<bd){bd=d;best=a;}
   }
   return best;
@@ -2510,19 +2525,13 @@ if(isTouchDev){
 resize();lastTime=performance.now();requestAnimationFrame(loop);
 // Victory lap: ANY click/touch anywhere exits
 document.addEventListener('click',function(e){
-  if(raceState==='victory'&&_skipBtn.visible){
-    victoryTimer=0;endVictoryLap();
-  }
+  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
 });
 document.addEventListener('touchend',function(e){
-  if(raceState==='victory'&&_skipBtn.visible){
-    victoryTimer=0;endVictoryLap();
-  }
+  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
 },false);
 document.addEventListener('keydown',function(e){
-  if(raceState==='victory'&&_skipBtn.visible){
-    victoryTimer=0;endVictoryLap();
-  }
+  if(raceState==='victory'){victoryTimer=0;endVictoryLap();}
 });
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
 </script>
