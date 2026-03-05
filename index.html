@@ -31,7 +31,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 #mmLbl{position:absolute;top:2px;left:4px;font-size:7px;letter-spacing:2px;color:rgba(0,212,255,0.4);}
 #alertBar{position:fixed;top:76px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:25;opacity:0;transition:opacity 0.2s;white-space:nowrap;}
 #alertBar.show{opacity:1;}
-#alertTxt{font-size:clamp(10px,2.5vw,14px);font-weight:700;letter-spacing:3px;color:#ffdd44;text-shadow:0 0 16px rgba(255,200,0,0.8);}
+#alertTxt{font-size:clamp(11px,2.8vw,16px);font-weight:700;letter-spacing:3px;color:#ffe800;text-shadow:0 0 24px rgba(255,230,0,1),0 0 50px rgba(255,200,0,0.6);}
 #cogBtn{position:fixed;top:10px;left:50%;transform:translateX(-50%);pointer-events:all;z-index:21;background:transparent;border:1px solid rgba(0,212,255,0.3);border-radius:50%;width:24px;height:24px;font-size:13px;color:rgba(0,212,255,0.6);cursor:pointer;display:flex;align-items:center;justify-content:center;}
 #cogOv{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:70;display:none;align-items:center;justify-content:center;padding:16px;}
 #cogOv.show{display:flex;}
@@ -64,12 +64,12 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 #shopClose{width:100%;background:transparent;border:1px solid rgba(255,200,50,0.25);border-radius:5px;color:rgba(255,200,50,0.5);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;padding:10px;cursor:pointer;margin-top:6px;}
 /* Active powerup bar */
 #powBar{position:fixed;bottom:170px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:20;display:flex;gap:8px;}
-.pow-pill{font-size:8px;letter-spacing:1px;color:rgba(0,212,255,0.8);background:rgba(0,0,0,0.6);border:1px solid rgba(0,212,255,0.3);border-radius:4px;padding:3px 8px;}
+.pow-pill{font-size:9px;letter-spacing:1px;color:rgba(0,230,255,1);text-shadow:0 0 10px rgba(0,212,255,0.8);background:rgba(0,0,0,0.7);border:1px solid rgba(0,212,255,0.6);border-radius:4px;padding:3px 8px;}
 /* Title */
-#titleScreen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:101;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+#titleScreen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:101;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;padding-bottom:0;}
 #titleCvs{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-.tbtn{position:relative;z-index:1;margin-top:30px;background:rgba(0,0,0,0.6);border:2px solid rgba(0,212,255,0.5);font-family:'Orbitron',monospace;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;padding:14px 40px;cursor:pointer;border-radius:4px;color:#00d4ff;margin-top:14px;}
-.tsub{position:relative;z-index:1;font-size:8px;letter-spacing:3px;color:rgba(0,212,255,0.4);margin-top:10px;}
+.tbtn{position:absolute;bottom:15%;left:50%;transform:translateX(-50%);z-index:2;background:rgba(0,0,0,0.6);border:2px solid rgba(0,212,255,0.5);font-family:'Orbitron',monospace;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;padding:14px 40px;cursor:pointer;border-radius:4px;color:#00d4ff;margin-top:14px;}
+.tsub{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:2;font-size:clamp(16px,2.4vw,22px);letter-spacing:4px;color:#ffffff;text-shadow:0 0 20px rgba(0,212,255,1),0 0 50px rgba(0,212,255,0.8),0 0 80px rgba(0,212,255,0.4);}
 /* Win screen */
 #winScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.93);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;}
 #winScreen.show{display:flex;}
@@ -87,8 +87,8 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 #bFire.pressed{background:rgba(255,68,68,0.18);}
 @media(orientation:portrait){#jsWrap{bottom:22px;left:14px;}#bThrust{bottom:48px;right:114px;}#bFire{bottom:28px;right:18px;}}
 @media(orientation:landscape){#jsWrap{left:12px;top:50%;transform:translateY(-50%);}#bThrust{right:110px;top:50%;transform:translateY(-50%);}#bFire{right:14px;top:50%;transform:translateY(-20%);}}
-@keyframes blink{0%,100%{opacity:0.3;}50%{opacity:1;}}
-.blink{animation:blink 1.3s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:0.9;}50%{opacity:1;}}
+.blink{animation:blink 5s ease-in-out infinite;}
 </style>
 </head>
 <body>
@@ -150,12 +150,31 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <div id="titleScreen">
   <canvas id="titleCvs"></canvas>
+  <button class="tbtn" id="btnTutorial" style="bottom:25%;">📖 HOW TO PLAY</button>
   <button class="tbtn" id="btnPlay">🚀 LAUNCH</button>
   <div class="tsub blink">COLLECT ALL 6 WARP CORES — FIRST TO WIN! 🏅</div>
 </div>
 
+<!-- Tutorial Overlay -->
+
+<div id="tutorialOv" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;background:rgba(0,0,10,0.96);overflow-y:auto;font-family:Orbitron,monospace;">
+  <canvas id="tutBgCvs" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+  <div style="position:relative;z-index:1;max-width:860px;margin:0 auto;padding:40px 24px 60px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:clamp(22px,5vw,42px);font-weight:900;color:#00d4ff;text-shadow:0 0 30px rgba(0,212,255,0.9),0 0 60px rgba(0,212,255,0.5);">🚀 SPACE RANGER OLYMPICS</div>
+      <div style="font-size:clamp(12px,2.5vw,20px);color:#ffdd00;margin-top:8px;text-shadow:0 0 20px rgba(255,220,0,0.8);">HOW TO PLAY</div>
+    </div>
+    <div id="tutCards" style="display:flex;flex-direction:column;gap:20px;"></div>
+    <div style="text-align:center;margin-top:40px;">
+      <button onclick="document.getElementById('tutorialOv').style.display='none'" style="font-family:Orbitron,monospace;font-size:clamp(12px,2vw,16px);letter-spacing:3px;padding:14px 48px;background:rgba(0,0,0,0.7);border:2px solid rgba(0,212,255,0.7);color:#00d4ff;cursor:pointer;border-radius:4px;">← BACK TO TITLE</button>
+    </div>
+  </div>
+</div>
+
 <!-- Win -->
 
+<div id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:6%;left:50%;transform:translateX(-50%);z-index:30;padding:12px 36px;font-family:Orbitron,monospace;font-size:clamp(11px,1.8vw,16px);letter-spacing:3px;color:#fff;background:rgba(0,0,0,0.5);border:2px solid rgba(180,0,255,0.6);border-radius:6px;cursor:pointer;opacity:0.4;animation:skipGlow 3s ease-in-out infinite;">&#x23E9; SKIP VICTORY LAP</div>
+<style>@keyframes skipGlow{0%,100%{box-shadow:0 0 8px rgba(180,0,255,0.3);border-color:rgba(180,0,255,0.4);}50%{box-shadow:0 0 28px rgba(180,0,255,0.9);border-color:rgba(220,80,255,0.9);}}</style>
 <div id="winScreen">
   <div class="win-title" id="winTitle">YOU WIN!</div>
   <div class="win-sub" id="winSub">ALL 6 WARP CORES DEPOSITED</div>
@@ -228,6 +247,18 @@ function sfxBoom(){if(!audioOk||!actx)return;try{var buf=actx.createBuffer(1,Mat
 function sfxPickup(){sfxTone(500,0.09,0.3,'sine');setTimeout(function(){sfxTone(800,0.08,0.25,'sine');},70);}
 function sfxDeposit(){sfxTone(300,0.06,0.3,'sine');setTimeout(function(){sfxTone(600,0.08,0.3,'sine');},60);setTimeout(function(){sfxTone(1000,0.12,0.3,'sine');},130);}
 function sfxShoot(){sfxTone(400,0.06,0.25,'sawtooth');}
+function sfxCountdownBeep(n){
+  // n=3,2,1 -> short rising beep; n=0 -> long GO chord
+  if(!audioOk||!actx)return;
+  if(n>0){
+    sfxTone(440+n*80,0.05,0.35,'sine');
+  } else {
+    // GO: three simultaneous tones for a bright chord
+    sfxTone(523,0.1,0.6,'sine');
+    setTimeout(function(){sfxTone(659,0.1,0.6,'sine');},20);
+    setTimeout(function(){sfxTone(784,0.1,0.6,'sine');},40);
+  }
+}
 function ytExtract(url){try{var pl=url.match(/[?&]list=([A-Za-z0-9_-]+)/);if(pl)return{type:'playlist',id:pl[1]};var v=url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);if(v)return{type:'video',id:v[1]};}catch(e){}return null;}
 
 /* ═══════════════ COG MENU ═══════════════ */
@@ -254,8 +285,8 @@ var CORE_DEFS=[
 ];
 
 /* ═══════════════ GAME STATE ═══════════════ */
-var STARPORT={x:WW/2,y:WH/2};
-var RECHARGE={x:WW/2,y:WH/2,r:60,charges:10,maxCharges:10,cooldown:0,cooldownMax:14000,pulse:0};
+var STARPORT={x:WW/2,y:WH/2-130};
+var RECHARGE={x:WW/2,y:WH/2+130,r:55,charges:10,maxCharges:10,cooldown:0,cooldownMax:14000,pulse:0};
 var RACE_PADS=[
   {x:WW-380,y:WH-380,label:'P1',isPlayer:true},
   {x:380,   y:380,   label:'AI1',isPlayer:false},
@@ -409,12 +440,27 @@ function initGame(){
   bullets=[];aiShots=[];particles=[];
   activePowerups={missile:0,shield:0,turbo:0};
   permUpgrades={turboLevel:0,missiles:0,doubleFire:false,deputies:[],shieldPips:0};
-  raceState='racing';racerOrder=[];victoryT=0;
+  raceState='warmup';racerOrder=[];victoryT=0;
+  warmupTimer=120000; // 2 minutes
+  countdownPhase=0;countdownTimer=0;
 
-  victoryPath=[];raceState='racing';racerOrder=[];victoryT=0;
-  var vm=160,vsteps=80;
-  var vcorners=[{x:vm,y:vm},{x:WW-vm,y:vm},{x:WW-vm,y:WH-vm},{x:vm,y:WH-vm}];
-  for(var ci=0;ci<4;ci++){var vc0=vcorners[ci],vc1=vcorners[(ci+1)%4];for(var si=0;si<vsteps/4;si++){var vt=si/(vsteps/4);victoryPath.push({x:vc0.x+(vc1.x-vc0.x)*vt,y:vc0.y+(vc1.y-vc0.y)*vt});}}
+  raceState='warmup'; // also set here after second init
+  // Parade waypoints: player pad(bot-right)->bot-mid->bot-left->top-left->top-mid->top-right(BOSS)
+  victoryWaypoints=[
+    {x:WW-380, y:WH-380, label:'START'},
+    {x:WW/2,   y:WH-100, label:'BOT_MID'},
+    {x:100,    y:WH-380, label:'BOT_LEFT'},
+    {x:100,    y:100,    label:'TOP_LEFT'},
+    {x:WW/2,   y:100,    label:'TOP_MID'},
+    {x:WW-100, y:100,    label:'TOP_RIGHT', boss:true}
+  ];
+  victoryPath=[];
+  for(var wi=0;wi<victoryWaypoints.length-1;wi++){
+    var wa=victoryWaypoints[wi],wb=victoryWaypoints[wi+1];
+    for(var vsi=0;vsi<20;vsi++){var vvt=vsi/20;victoryPath.push({x:wa.x+(wb.x-wa.x)*vvt,y:wa.y+(wb.y-wa.y)*vvt});}
+  }
+  victoryBossKilled=false;
+  victoryBoss={active:false,alive:false,x:WW-200,y:200,hp:0,maxHp:0,pulse:0,invincible:0,hueShift:0,fireTimer:0};
   var pp=RACE_PADS[0];
   ship={x:pp.x,y:pp.y,vx:0,vy:0,angle:-Math.PI/2,shieldHp:5,shieldMax:5,invincible:3000,
     thrusting:false,trail:[],carrying:null,fireTimer:0,alive:true,
@@ -579,16 +625,23 @@ function respawnCore(name){
   });
 }
 
+function spawnAsteroidAt(x,y,size,bvx,bvy){
+  var r=size==='large'?rnd(38,48):size==='medium'?rnd(20,30):rnd(9,14);
+  var spd=size==='large'?0.8:size==='medium'?1.3:2.0;
+  var n=rndI(6,9);
+  var offs=[];for(var k=0;k<n;k++) offs.push(rnd(0.65,1.0));
+  var cols=size==='small'?['#7a6a5a','#5a4a3a','#9a8a7a']:['#8a7a6a','#6a5a4a','#aa9a8a'];
+  asteroids.push({
+    x:x,y:y,vx:(bvx||0)+rnd(-spd,spd),vy:(bvy||0)+rnd(-spd,spd),
+    r:r,rot:rnd(0,Math.PI*2),rotV:rnd(-0.022,0.022),
+    verts:n,offs:offs,cols:cols,alive:true,size:size
+  });
+}
 function spawnAsteroid(){
-  // Keep away from spawn zone and starport
   var x,y,tries=0;
   do{x=rnd(200,WW-200);y=rnd(200,WH-200);tries++;}
   while(tries<20&&(dst(x,y,SPAWN_ZONE.x,SPAWN_ZONE.y)<350||dst(x,y,STARPORT.x,STARPORT.y)<200));
-  var r=rnd(14,30);
-  var n=rndI(6,9);
-  var offs=[];for(var i=0;i<n;i++) offs.push(rnd(0.6,1.0));
-  var c=['#8a7a6a','#6a5a4a','#aa9a8a'];
-  asteroids.push({x:x,y:y,vx:rnd(-1.2,1.2),vy:rnd(-1.2,1.2),r:r,rot:rnd(0,Math.PI*2),rotV:rnd(-0.015,0.015),verts:n,offs:offs,cols:c,alive:true});
+  spawnAsteroidAt(x,y,'large',0,0);
 }
 
 /* ═══════════════ PARTICLES ═══════════════ */
@@ -602,11 +655,29 @@ function spawnParts(x,y,n,cols,spd){
 /* ═══════════════ CAMERA ═══════════════ */
 function updateCamera(){
   if(raceState==='victory'){
-    var racing=aiShips.filter(function(a){return a.alive&&!a.victoryLap&&!a.isPatroller;});
-    if(racing.length>0){
-      var focus=racing[Math.floor(Date.now()/4000)%racing.length];
-      CAM.x+=(focus.x-CAM.x)*0.04;CAM.y+=(focus.y-CAM.y)*0.04;
-      CAM.zoom+=(0.55-CAM.zoom)*0.04;
+    if(victoryTimer>0){
+      if(victoryBoss.active&&victoryBoss.alive){
+        CAM.x+=(victoryBoss.x-CAM.x)*0.04;CAM.y+=(victoryBoss.y-CAM.y)*0.04;
+        CAM.zoom+=(0.42-CAM.zoom)*0.04;
+      } else if(ship.victoryPhase==='circles'||ship.victoryPhase==='returnToPad'){
+        CAM.x+=(RACE_PADS[0].x-CAM.x)*0.04;CAM.y+=(RACE_PADS[0].y-CAM.y)*0.04;
+        CAM.zoom+=(0.28-CAM.zoom)*0.04;
+      } else {
+        CAM.x+=(WW/2-CAM.x)*0.015;CAM.y+=(WH/2-CAM.y)*0.015;
+        CAM.zoom+=(0.18-CAM.zoom)*0.025;
+      }
+    } else if(ship.victoryLap&&!ship.victoryDone){
+      // Follow player before timer starts
+      CAM.x+=(ship.x-CAM.x)*0.06;CAM.y+=(ship.y-CAM.y)*0.06;
+      CAM.zoom+=(0.65-CAM.zoom)*0.05;
+    } else {
+      // Pan between AI still racing
+      var racing=aiShips.filter(function(a){return a.alive&&!a.victoryLap&&!a.isPatroller;});
+      if(racing.length>0){
+        var focus=racing[Math.floor(Date.now()/4000)%racing.length];
+        CAM.x+=(focus.x-CAM.x)*0.04;CAM.y+=(focus.y-CAM.y)*0.04;
+        CAM.zoom+=(0.52-CAM.zoom)*0.04;
+      }
     }
     return;
   }
@@ -671,8 +742,83 @@ function updatePowBar(){
 }
 
 /* ═══════════════ PLAYER UPDATE ═══════════════ */
+function steerToward(racer,dt){
+  var isPlayer=(racer===ship);
+  var phase=racer.victoryPhase||'parade';
+  var tx2,ty2;
+  var padX=RACE_PADS[0].x,padY=RACE_PADS[0].y;
+  if(phase==='circles'){
+    racer.orbitAngle=(racer.orbitAngle||rnd(0,Math.PI*2))+(racer.orbitSpeed||0.002)*(racer.orbitDir||1)*dt;
+    tx2=padX+Math.cos(racer.orbitAngle)*(racer.orbitR||200);
+    ty2=padY+Math.sin(racer.orbitAngle)*(racer.orbitR||200);
+  } else if(phase==='returnToPad'){
+    tx2=padX+rnd(-50,50);ty2=padY+rnd(-50,50);
+    if(dst(racer.x,racer.y,padX,padY)<220){
+      racer.victoryPhase='circles';
+      racer.orbitAngle=Math.atan2(racer.y-padY,racer.x-padX);
+      racer.orbitR=Math.max(100,dst(racer.x,racer.y,padX,padY)+rnd(-30,30));
+      racer.orbitSpeed=rnd(0.0015,0.004);
+      racer.orbitDir=(Math.random()<0.5)?1:-1;
+    }
+  } else if(phase==='bossFight'){
+    if(!victoryBoss.active){
+      tx2=WW-200;ty2=200;
+      if(isPlayer&&dst(racer.x,racer.y,WW-200,200)<700) spawnVictoryBoss();
+    } else if(!victoryBoss.alive){
+      racer.victoryPhase='returnToPad';tx2=padX;ty2=padY;
+    } else {
+      var bOrb=(racer.bossOrbit||0)+(dt*0.0007*(racer.bossOrbitDir||1));
+      racer.bossOrbit=bOrb;
+      tx2=victoryBoss.x+Math.cos(bOrb)*260;
+      ty2=victoryBoss.y+Math.sin(bOrb)*260;
+    }
+  } else {
+    var wIdx=racer.waypointIdx||0;
+    if(wIdx>=victoryWaypoints.length){
+      racer.victoryPhase='bossFight';racer.bossOrbit=rnd(0,Math.PI*2);racer.bossOrbitDir=(Math.random()<0.5)?1:-1;
+      tx2=WW-200;ty2=200;
+    } else {
+      var wp=victoryWaypoints[wIdx];
+      var off=isPlayer?0:(racer.waypointOff||0);
+      tx2=wp.x+off;ty2=wp.y+off;
+      if(dst(racer.x,racer.y,wp.x,wp.y)<200){
+        racer.waypointIdx=(wIdx+1);
+        if(wp.boss){racer.victoryPhase='bossFight';racer.bossOrbit=rnd(0,Math.PI*2);racer.bossOrbitDir=(Math.random()<0.5)?1:-1;}
+      }
+    }
+  }
+  if(tx2!==undefined){
+    var vda=Math.atan2(ty2-racer.y,tx2-racer.x);
+    racer.angle+=Math.atan2(Math.sin(vda-racer.angle),Math.cos(vda-racer.angle))*0.10;
+    racer.vx+=Math.cos(racer.angle)*0.32;racer.vy+=Math.sin(racer.angle)*0.32;
+  }
+  racer.vx*=0.93;racer.vy*=0.93;
+  var vs2=Math.sqrt(racer.vx*racer.vx+racer.vy*racer.vy);
+  var maxV=(phase==='circles')?4.5:5.5;
+  if(vs2>maxV){racer.vx=racer.vx/vs2*maxV;racer.vy=racer.vy/vs2*maxV;}
+  racer.thrusting=true;
+  racer.x=clamp(racer.x+racer.vx,40,WW-40);
+  racer.y=clamp(racer.y+racer.vy,40,WH-40);
+  racer.trail=racer.trail||[];
+  racer.trail.push({x:racer.x,y:racer.y});
+  if(racer.trail.length>28)racer.trail.shift();
+  if(racer.invincible>0)racer.invincible-=dt;
+}
+
 function updatePlayer(dt){
   if(!ship.alive)return;
+
+  // Victory parade autopilot
+  if(ship.victoryLap){
+    steerToward(ship,dt);
+    ship.fireTimer-=dt;
+    if(ship.fireTimer<=0){
+      ship.fireTimer=rnd(160,280);
+      var sp=rnd(-0.55,0.55);
+      bullets.push({x:ship.x,y:ship.y,vx:Math.cos(ship.angle+sp)*11,vy:Math.sin(ship.angle+sp)*11,life:1400});
+    }
+    return;
+  }
 
   // Powerup timers
   for(var k in activePowerups) if(activePowerups[k]>0) activePowerups[k]-=dt;
@@ -728,8 +874,8 @@ function updatePlayer(dt){
   }
 
 
-  // Pick up from own pad or map
-  if(!ship.carrying){
+  // Pick up from own pad or map (blocked during warmup)
+  if(!ship.carrying&&raceState!=='warmup'&&raceState!=='countdown'){
     for(var i=0;i<ship.cores.length;i++){var pc=ship.cores[i];if(!pc.alive)continue;if(dst(ship.x,ship.y,pc.x,pc.y)<54){ship.carrying=pc;pc.alive=false;sfxPickup();showAlert('CORE PICKED UP: '+pc.name,1500);updateCarryHUD();break;}}
     for(var i=0;i<warpCores.length;i++){var wcc=warpCores[i];if(!wcc.alive)continue;if(dst(ship.x,ship.y,wcc.x,wcc.y)<54){ship.carrying=wcc;wcc.alive=false;warpCores.splice(i,1);sfxPickup();showAlert('STOLEN CORE!',1500);updateCarryHUD();break;}}
   }
@@ -760,7 +906,7 @@ function updatePlayer(dt){
           boss.x=bx;boss.y=by;BOSS_POS.x=bx;BOSS_POS.y=by;
           showAlert('BOSS SPAWNED! Destroy it!',3500);
         }
-        if(totalDep>=6){setTimeout(triggerWin,800);}
+        if(totalDep>=6){triggerWin();}
         break;
       }
     }
@@ -777,7 +923,7 @@ function updatePlayer(dt){
   }
 
   // Starport shop
-  if(!shopOpen&&shopCooldown<=0&&dst(ship.x,ship.y,STARPORT.x,STARPORT.y)<65){
+  if(!shopOpen&&shopCooldown<=0&&dst(ship.x,ship.y,STARPORT.x,STARPORT.y)<85){
     openShop();
   }
   if(shopCooldown>0) shopCooldown-=dt;
@@ -935,17 +1081,20 @@ function updateAI(ai,dt){
     }
   }
   if(ai.victoryLap){
-    ai.victoryPos=(ai.victoryPos||0)+dt*0.00025;
-    var vIdx=Math.floor(ai.victoryPos*victoryPath.length)%victoryPath.length;
-    var vN=(vIdx+1)%victoryPath.length;
-    var vF=(ai.victoryPos*victoryPath.length)%1;
-    tx=victoryPath[vIdx].x+(victoryPath[vN].x-victoryPath[vIdx].x)*vF;
-    ty=victoryPath[vIdx].y+(victoryPath[vN].y-victoryPath[vIdx].y)*vF;
-    ai.speed=4.5;
+    steerToward(ai,dt);
+    // Show-off fire
+    ai.fireTimer=(ai.fireTimer||0)-dt;
+    if(ai.fireTimer<=0){
+      ai.fireTimer=rnd(140,280);
+      var spread=rnd(-0.65,0.65);
+      aiShots.push({x:ai.x,y:ai.y,vx:Math.cos(ai.angle+spread)*10,vy:Math.sin(ai.angle+spread)*10,
+        angle:ai.angle+spread,life:1800,missile:false,col:ai.color,fromPlayer:false});
+    }
+    return;
   }
   // State machine
   if(ai.state==='seekCore'){
-    if(!ai.isPatroller&&!ai.victoryLap){
+    if(!ai.isPatroller&&!ai.victoryLap&&raceState!=='warmup'&&raceState!=='countdown'){
     var best=null,bd=99999;
     for(var i=0;i<ai.cores.length;i++){var cc=ai.cores[i];if(!cc.alive)continue;var d=dst(ai.x,ai.y,cc.x,cc.y);if(d<bd){bd=d;best=cc;}}
     for(var i=0;i<warpCores.length;i++){var wcc=warpCores[i];if(!wcc.alive)continue;var d=dst(ai.x,ai.y,wcc.x,wcc.y);if(d<bd){bd=d;best=wcc;}}
@@ -956,6 +1105,18 @@ function updateAI(ai,dt){
       var bidx=warpCores.indexOf(best);if(bidx>=0)warpCores.splice(bidx,1);
       ai.state='deposit';
     }
+    }
+  } else if(ai.state==='fightBoss'){
+    if(!boss.alive||!boss.active){ai.state='seekCore';}
+    else{
+      tx=boss.x;ty=boss.y;
+      ai.fireTimer-=dt;
+      if(ai.fireTimer<=0&&dst(ai.x,ai.y,boss.x,boss.y)<700){
+        ai.fireTimer=rnd(700,1400);
+        var bfa=Math.atan2(boss.y-ai.y,boss.x-ai.x);
+        aiShots.push({x:ai.x,y:ai.y,vx:Math.cos(bfa)*9,vy:Math.sin(bfa)*9,angle:bfa,life:3000,missile:false,col:ai.color,fromPlayer:true});
+        if(dst(ai.x,ai.y,boss.x,boss.y)<90)damageBoss(1);
+      }
     }
   } else if(ai.state==='towBH'){
     // Tow personal black hole to center station
@@ -1002,7 +1163,18 @@ function updateAI(ai,dt){
             ai.personalBH={x:RACE_PADS[ai.padIdx>=0?ai.padIdx:0].x+rnd(-150,150),y:RACE_PADS[ai.padIdx>=0?ai.padIdx:0].y-200,towed:false,delivered:false,r:28};
             ai.state='towBH';
           }
-          if(aiLaps===4&&!ai.bossSpawned){ai.bossSpawned=true;}
+          if(aiLaps===4&&!ai.bossSpawned){
+            ai.bossSpawned=true;
+            if(!boss.active){
+              boss.active=true;boss.alive=true;boss.invincible=2000;
+              var bx2,by2,bt2=0;
+              do{bx2=rnd(500,WW-500);by2=rnd(500,WH-500);bt2++;}
+              while(bt2<30&&dst(bx2,by2,WW/2,WH/2)<500);
+              boss.x=bx2;boss.y=by2;BOSS_POS.x=bx2;BOSS_POS.y=by2;
+              showAlert('BOSS AWAKENED! AI triggered the fight!',3000);
+            }
+            ai.state='fightBoss';
+          }
           if(ai.deposited.length>=6){
             ai.victoryLap=true;ai.state='victory';
             ai.finishPlace=racerOrder.length+1;racerOrder.push(ai);
@@ -1313,10 +1485,33 @@ function updateProjectiles(dt){
         al.hp--;al.invincible=600;
         spawnParts(al.x,al.y,6,['#ff44ff','#ffffff'],2.5);
         if(al.hp<=0){al.alive=false;credits+=50;updateCreditsHUD();spawnParts(al.x,al.y,18,['#ff44ff','#aa00ff','#ffffff'],4);sfxBoom();}
-        bullets.splice(i,1);break;
+        bullets.splice(i,1);hit=true;break;
       }
     }
-  }
+    if(hit)continue;
+        // Hit asteroids -- one-shot fracture
+    for(var j=asteroids.length-1;j>=0;j--){
+      var ast=asteroids[j];if(!ast.alive)continue;
+      if(dst(b.x,b.y,ast.x,ast.y)<ast.r+5){
+        ast.alive=false;
+        bullets.splice(i,1);hit=true;
+        var sz=ast.size||'large';
+        if(sz==='large'){
+          spawnParts(ast.x,ast.y,14,['#aaaaaa','#888888','#cccccc'],3.5);
+          spawnAsteroidAt(ast.x,ast.y,'medium',ast.vx*0.7,ast.vy*0.7);
+          spawnAsteroidAt(ast.x,ast.y,'medium',-ast.vx*0.7,-ast.vy*0.7);
+        } else if(sz==='medium'){
+          spawnParts(ast.x,ast.y,10,['#aaaaaa','#999999','#bbbbbb'],2.5);
+          spawnAsteroidAt(ast.x,ast.y,'small',ast.vx*0.8,ast.vy*0.8);
+          spawnAsteroidAt(ast.x,ast.y,'small',-ast.vx*0.8,-ast.vy*0.8);
+        } else {
+          spawnParts(ast.x,ast.y,12,['#bbbbbb','#cccccc','#ffddaa'],3);
+          credits+=15;updateCreditsHUD();
+        }
+        sfxBoom();break;
+      }
+    }
+  }  // end bullets loop
 
   // AI shots / missiles
   for(var i=aiShots.length-1;i>=0;i--){
@@ -1364,18 +1559,19 @@ function hitPlayer(dmg){
   ship.invincible=2200;
   updateShieldHUD();
   if(ship.shieldHp<=0){
-    // Drop core
+    // Drop core at current position before teleporting
     if(ship.carrying){
-      var c=ship.carrying;
-      var psi=CORE_DEFS.findIndex(function(d){return d.name===c.name;});
-      var psp=coreSlotPos(psi);c.x=psp.x;c.y=psp.y;c.alive=true;
-      warpCores.push(c);ship.carrying=null;
-      showAlert('💥 SHIELD DOWN — CORE DROPPED!',2500);
-    } else {showAlert('💥 SHIELD DOWN!',2000);}
+      var dc3=ship.carrying;dc3.x=ship.x;dc3.y=ship.y;dc3.alive=true;
+      warpCores.push(dc3);ship.carrying=null;
+      showAlert('💥 SHIELD DOWN! CORE DROPPED!',2500);
+    } else {showAlert('💥 SHIELD DOWN! RESPAWNING!',2000);}
+    spawnParts(ship.x,ship.y,22,['#00d4ff','#ffaa00','#ffffff'],5);
+    // Respawn at own starting pad
+    ship.x=RACE_PADS[0].x+rnd(-30,30);ship.y=RACE_PADS[0].y+rnd(-30,30);
+    ship.vx=0;ship.vy=0;
     ship.shieldHp=ship.shieldMax;
     ship.invincible=3000;
     updateCarryHUD();
-    spawnParts(ship.x,ship.y,22,['#00d4ff','#ffaa00','#ffffff'],5);
   }
 }
 
@@ -1425,20 +1621,127 @@ function updateRecharge(dt){
 
 /* ═══════════════ WIN / LOSE ═══════════════ */
 function triggerWin(){
-  ship.victoryLap=true;ship.finishPlace=racerOrder.length+1;racerOrder.push(ship);
+  ship.victoryLap=true;ship.victoryPos=0;ship.victoryDone=false;
+  ship.finishPlace=racerOrder.length+1;racerOrder.push(ship);
   raceState='victory';
-  setTimeout(function(){
-    document.getElementById('winTitle').textContent='🏆 YOU WIN! 1ST PLACE';
-    document.getElementById('winTitle').style.fontSize='clamp(22px,6vw,48px)';
-    document.getElementById('winSub').textContent='ALL 6 WARP CORES DEPOSITED - $'+credits+' EARNED';
-    document.getElementById('winScreen').classList.add('show');
-  },2000);
+  showAlert('🏆 YOU WIN! ENJOY YOUR VICTORY LAP!',4000);
+}
+
+var victoryTimer=0;
+var warmupTimer=0;  // ms remaining in pre-race warmup
+var countdownPhase=0; // 3,2,1,0 during countdown
+var countdownTimer=0;
+var victoryWaypoints=[];
+var victoryBossKilled=false;
+var victoryBoss={active:false,alive:false,x:6200,y:200,hp:0,maxHp:0,pulse:0,invincible:0,hueShift:0,fireTimer:0};
+
+function showVictoryResults(){
+  // Build results
+  var racers=[{name:'YOU',place:ship.finishPlace||1,color:'#00d4ff',laps:ship.laps}];
+  for(var i=0;i<aiShips.length;i++){
+    var a=aiShips[i];if(a.isPatroller)continue;
+    racers.push({name:a.name,place:a.finishPlace||99,color:a.color,laps:a.laps||0});
+  }
+  racers.sort(function(a,b){return a.place-b.place;});
+  var placeStr=['1ST','2ND','3RD','4TH','5TH','6TH'];
+  var medal=['🏆','🥈','🥉','🥊','  5.','  6.'];
+  var lines=racers.map(function(r,i){
+    return (medal[i]||(' '+(i+1)+'.'))+'  '+r.name+'  ('+r.laps+' laps)';
+  }).join(' | ');
+  var pos=racers.findIndex(function(r){return r.name==='YOU';});
+  // Store results for win screen
+  window._winTitle='🏆 YOU FINISHED '+placeStr[pos]+'!';
+  window._winLines=lines;
+  // Start 20-second victory celebration timer
+  victoryTimer=20000;
+  document.getElementById('skipVictoryBtn').style.display='block';
+  // Launch all racers on victory parade
+  for(var i=0;i<aiShips.length;i++){
+    var ai2=aiShips[i];if(ai2.isPatroller)continue;
+    ai2.victoryLap=true;ai2.victoryPhase='parade';ai2.waypointIdx=0;
+    ai2.waypointOff=rnd(-140,140);ai2.bossOrbit=rnd(0,Math.PI*2);
+    ai2.bossOrbitDir=(Math.random()<0.5)?1:-1;
+  }
+  ship.victoryPhase='parade';ship.waypointIdx=0;
+}
+
+function spawnVictoryBoss(){
+  if(victoryBoss.active)return;
+  victoryBoss.active=true;victoryBoss.alive=true;
+  victoryBoss.hp=35;victoryBoss.maxHp=35;
+  victoryBoss.invincible=2000;victoryBoss.hueShift=0;victoryBoss.fireTimer=800;
+  showAlert('🌈 VICTORY BOSS! TAKE IT DOWN TOGETHER!',3500);
+}
+function updateVictoryBoss(dt){
+  var vb=victoryBoss;if(!vb.active||!vb.alive)return;
+  if(vb.invincible>0)vb.invincible-=dt;
+  vb.pulse+=dt*0.003;vb.hueShift=(vb.hueShift+dt*0.2)%360;
+  // Drift near top-right
+  vb.x=WW-200+Math.sin(vb.pulse*0.7)*140;vb.y=200+Math.cos(vb.pulse*0.5)*110;
+  // Fire spread at ships
+  vb.fireTimer-=dt;
+  if(vb.fireTimer<=0){
+    vb.fireTimer=rnd(500,1000);
+    var tgts=[ship].concat(aiShips.filter(function(a){return a.victoryLap&&a.alive;}));
+    var tgt=tgts[Math.floor(Math.random()*tgts.length)];
+    if(tgt){var ba=Math.atan2(tgt.y-vb.y,tgt.x-vb.x);
+      for(var k=-1;k<=1;k++) aiShots.push({x:vb.x,y:vb.y,vx:Math.cos(ba+k*0.3)*7,vy:Math.sin(ba+k*0.3)*7,angle:ba,life:3000,missile:false,col:'#ff00ff',fromPlayer:false});
+    }
+  }
+  // Player bullets
+  for(var i=bullets.length-1;i>=0;i--){
+    if(vb.invincible>0)break;
+    if(dst(bullets[i].x,bullets[i].y,vb.x,vb.y)<60){vb.hp--;vb.invincible=100;spawnParts(vb.x,vb.y,5,['#ff00ff','#ffff00','#00ffff'],2.5);bullets.splice(i,1);if(vb.hp<=0){killVictoryBoss();return;}}
+  }
+  // AI shots that are fromPlayer
+  for(var i=aiShots.length-1;i>=0;i--){
+    if(vb.invincible>0)break;
+    if(!aiShots[i].fromPlayer)continue;
+    if(dst(aiShots[i].x,aiShots[i].y,vb.x,vb.y)<60){vb.hp--;vb.invincible=100;spawnParts(vb.x,vb.y,5,['#ff00ff','#00ffff'],2);aiShots.splice(i,1);if(vb.hp<=0){killVictoryBoss();return;}}
+  }
+}
+function killVictoryBoss(){
+  victoryBoss.alive=false;
+  spawnParts(victoryBoss.x,victoryBoss.y,70,['#ff00ff','#ffff00','#00ffff','#ff8800','#ffffff'],6);
+  sfxBoom();
+  showAlert('💥 VICTORY BOSS DOWN! Head to the finish!',3500);
+  ship.victoryPhase='returnToPad';
+  for(var i=0;i<aiShips.length;i++){if(aiShips[i].victoryLap)aiShips[i].victoryPhase='returnToPad';}
+}
+function drawVictoryBoss(){
+  var vb=victoryBoss;if(!vb.active||!vb.alive)return;
+  var h=vb.hueShift;
+  for(var ring=3;ring>=1;ring--){
+    var rh=(h+ring*50)%360;
+    ctx.beginPath();ctx.arc(vb.x,vb.y,55+ring*20+Math.sin(vb.pulse+ring)*12,0,Math.PI*2);
+    ctx.strokeStyle='hsla('+rh+',100%,65%,'+(0.15+ring*0.1*3)+')';ctx.lineWidth=3+ring;ctx.stroke();
+  }
+  ctx.save();ctx.translate(vb.x,vb.y);ctx.rotate(vb.pulse*1.1);
+  ctx.beginPath();
+  for(var k=0;k<6;k++){var aa=(k/6)*Math.PI*2;ctx.lineTo(Math.cos(aa)*48,Math.sin(aa)*48);}
+  ctx.closePath();ctx.fillStyle='hsla('+h+',100%,8%,0.95)';ctx.fill();
+  ctx.strokeStyle='hsla('+h+',100%,70%,0.9)';ctx.lineWidth=4;ctx.stroke();
+  ctx.restore();
+  var bw=130,bh=11;
+  ctx.fillStyle='rgba(0,0,0,0.6)';ctx.fillRect(vb.x-bw/2,vb.y-88,bw,bh);
+  ctx.fillStyle='hsla('+h+',100%,60%,0.9)';ctx.fillRect(vb.x-bw/2,vb.y-88,bw*Math.max(0,vb.hp/vb.maxHp),bh);
+  ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=1.5;ctx.strokeRect(vb.x-bw/2,vb.y-88,bw,bh);
+  ctx.fillStyle='#fff';ctx.font='bold 12px Orbitron,monospace';ctx.textAlign='center';
+  ctx.fillText('VICTORY BOSS',vb.x,vb.y-93);
+}
+
+function endVictoryLap(){
+  document.getElementById('skipVictoryBtn').style.display='none';
+  document.getElementById('winTitle').textContent=window._winTitle||'🏆 RACE OVER!';
+  document.getElementById('winTitle').style.fontSize='clamp(18px,4vw,36px)';
+  document.getElementById('winSub').textContent=window._winLines||'';
+  document.getElementById('winScreen').classList.add('show');
 }
 function triggerAIWin(ai){
-  gameActive=false;
-  document.getElementById('winTitle').textContent=ai.name+' WINS!';
-  document.getElementById('winSub').textContent='ALL 6 WARP CORES DEPOSITED — YOU SCORED $'+credits;
-  document.getElementById('winScreen').classList.add('show');
+  // AI finished -- just record it; don't stop the game
+  // Player still needs to finish their race and do victory lap
+  ai.finishPlace=racerOrder.length; // already pushed to racerOrder before this call
+  showAlert(ai.name+' FINISHED! Keep racing!',3000);
 }
 document.getElementById('btnReplay').onclick=function(){document.getElementById('winScreen').classList.remove('show');startGame();};
 var _bs=document.getElementById('btnSkip');if(_bs)_bs.onclick=function(){document.getElementById('winScreen').classList.remove('show');initGame();};
@@ -1485,25 +1788,67 @@ document.getElementById('btnTitle').onclick=function(){document.getElementById('
     // Nebula
     try{var ng=tx.createRadialGradient(w*.5,h*.5,0,w*.5,h*.5,w*.4);ng.addColorStop(0,'rgba(20,0,60,0.3)');ng.addColorStop(1,'rgba(0,0,0,0)');tx.fillStyle=ng;tx.fillRect(0,0,w,h);}catch(e){}
 
-    // ── OLYMPIC RING CHAIN ──
-    var shapeSize=Math.min(w*0.058,48);
-    var gap=shapeSize*2.05;
+    // ── OLYMPIC RING CHAIN (intertwined) ──
+    var shapeSize=Math.min(w*0.062,52);
+    var overlap=shapeSize*0.62; // tight overlap so rings interlock
+    var gap=shapeSize*2-overlap;
     var chainW=(SHAPES.length-1)*gap;
     var startX=w/2-chainW/2;
-    var ringY=h*0.44;
-    // Draw interlocking lines first (behind shapes)
-    for(var i=0;i<SHAPES.length-1;i++){
-      var x1=startX+i*gap, x2=startX+(i+1)*gap;
-      tx.strokeStyle='rgba(255,255,255,0.08)';tx.lineWidth=2;
-      tx.beginPath();tx.moveTo(x1,ringY);tx.lineTo(x2,ringY);tx.stroke();
+    var ringY=h*0.445;
+    var rowOff=shapeSize*0.52; // vertical alternation
+
+    // Olympic rings -- proper 4-pass interlink
+    var shapeYBase = [];
+    for (var i = 0; i < SHAPES.length; i++) shapeYBase.push(i % 2 === 0 ? ringY : ringY + rowOff);
+    var shapeX = [];
+    for (var i = 0; i < SHAPES.length; i++) shapeX.push(startX + i * gap);
+
+    function midX(a, b) { return (shapeX[a] + shapeX[b]) / 2; }
+
+    // Pass 1: right half of even shapes (goes BEHIND next odd shape)
+    for (var i = 0; i < SHAPES.length; i += 2) {
+      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
+      var pulse = Math.sin(logoT + i * 1.1);
+      var rx = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
+      tx.save();
+      tx.beginPath(); tx.rect(rx, -9999, 9999, 99999); tx.clip();
+      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
+      tx.restore();
     }
-    // Draw shapes
-    for(var i=0;i<SHAPES.length;i++){
-      var sh=SHAPES[i];
-      var sx=startX+i*gap;
-      var sy=ringY+(i%2===0?0:shapeSize*0.55); // alternating vertical like Olympic rings
-      var pulse=Math.sin(logoT+i*1.1);
-      drawShape(tx,sx,sy,shapeSize,sh.type,sh.col,sh.glow,pulse);
+
+    // Pass 2: odd shapes clipped to NOT overlap even shape on their RIGHT
+    for (var i = 1; i < SHAPES.length; i += 2) {
+      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
+      var pulse = Math.sin(logoT + i * 1.1);
+      var rxOdd = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
+      tx.save();
+      tx.beginPath(); tx.rect(-9999, -9999, rxOdd + 9999, 99999); tx.clip();
+      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
+      tx.restore();
+    }
+
+    // Pass 3: left half of even shapes (IN FRONT of previous odd shape)
+    for (var i = 0; i < SHAPES.length; i += 2) {
+      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
+      var pulse = Math.sin(logoT + i * 1.1);
+      var lx = (i > 0) ? midX(i - 1, i) : sx - gap;
+      var rx = (i + 1 < SHAPES.length) ? midX(i, i + 1) : sx + gap;
+      tx.save();
+      tx.beginPath(); tx.rect(lx, -9999, rx - lx, 99999); tx.clip();
+      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
+      tx.restore();
+    }
+
+    // Pass 4: right portion of odd shapes IN FRONT of even shape to their right
+    for (var i = 1; i < SHAPES.length; i += 2) {
+      if (i + 1 >= SHAPES.length) continue;
+      var sh = SHAPES[i]; var sx = shapeX[i]; var sy = shapeYBase[i];
+      var pulse = Math.sin(logoT + i * 1.1);
+      var rx = midX(i, i + 1);
+      tx.save();
+      tx.beginPath(); tx.rect(rx, -9999, 9999, 99999); tx.clip();
+      drawShape(tx, sx, sy, shapeSize, sh.type, sh.col, sh.glow, pulse);
+      tx.restore();
     }
 
     // ── TITLE TEXT ──
@@ -1544,6 +1889,52 @@ document.getElementById('btnTitle').onclick=function(){document.getElementById('
   dt2();
 })();
 
+// ---- Tutorial overlay ----
+var TUT_CARDS=[
+  {icon:'💥',title:'PRE-RACE WARMUP',color:'#ffdd00',
+   body:'You get 2 minutes to blast asteroids and stock up on supplies. '+'Cores are visible but locked \xe2\x80\x94 the race hasn\'t started yet. Visit the Starport to buy upgrades!'},
+  {icon:'🔵',title:'GRAB A WARP CORE',color:'#00d4ff',
+   body:'When the race starts, grab a Warp Core from your pad or the map. '+'Fly it to the matching color Warp Nexus ring on the map to score a lap.'},
+  {icon:'🏁',title:'DELIVER TO WIN LAPS',color:'#44ffaa',
+   body:'Each Warp Core delivered to your Nexus = 1 lap. You need 6 laps to win. '+'Opponents are racing too \xe2\x80\x94 be fast!'},
+  {icon:'🌀',title:'LAP 2: BLACK HOLE',color:'#cc44ff',
+   body:'After 2 laps a Black Hole spawns near your pad. Use HOLD FIRE to grab it with your tractor beam, '+'then haul it to the Central Spaceport in the middle of the map.'},
+  {icon:'💀',title:'LAP 4: BOSS ALIEN',color:'#ff4444',
+   body:'After 4 laps the Boss Alien appears in the top-right. Destroy it before you can finish the race! '+'Upgrade your weapons at the Starport first.'},
+  {icon:'🏆',title:'HOME STRETCH',color:'#ffaa00',
+   body:'Deliver the last 2 cores to your Nexus to WIN! First racer to 6 laps takes the championship. '+'GOOD LUCK SPACE RANGER!'}
+];
+function renderTutorial(){
+  var el=document.getElementById('tutCards');el.innerHTML='';
+  TUT_CARDS.forEach(function(card,i){
+    var div=document.createElement('div');
+    div.style.cssText='background:rgba(0,0,20,0.8);border:1.5px solid '+card.color.replace('#','rgba(').replace(/(..)(..)(..)$/,function(m,r,g,b){return parseInt(r,16)+','+parseInt(g,16)+','+parseInt(b,16)+',0.5)'})+';border-radius:8px;padding:20px 24px;display:flex;gap:18px;align-items:flex-start;';
+    div.innerHTML='<div style="font-size:clamp(28px,5vw,42px);flex-shrink:0;">'+card.icon+'</div>'
+      +'<div><div style="font-size:clamp(12px,2vw,16px);font-weight:700;color:'+card.color+';text-shadow:0 0 12px '+card.color+';letter-spacing:2px;margin-bottom:8px;">'+card.title+'</div>'
+      +'<div style="font-size:clamp(11px,1.6vw,14px);color:#ccd;line-height:1.6;">'+card.body+'</div></div>';
+    el.appendChild(div);
+  });
+  // Animated star background in tutorial
+  var tc2=document.getElementById('tutBgCvs');
+  if(tc2&&!tc2._anim){
+    tc2._anim=true;
+    var tx2=tc2.getContext('2d');
+    var ts2=[];for(var i=0;i<120;i++)ts2.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.2,s:Math.random()*0.003+0.001});
+    function animTut(){tc2.width=window.innerWidth;tc2.height=window.innerHeight;
+      tx2.clearRect(0,0,tc2.width,tc2.height);
+      ts2.forEach(function(s){s._t=(s._t||0)+s.s;tx2.beginPath();tx2.arc(s.x*tc2.width,s.y*tc2.height,s.r,0,Math.PI*2);tx2.fillStyle='rgba(255,255,255,'+(0.3+0.3*Math.sin(s._t))+')';tx2.fill();});
+      if(document.getElementById('tutorialOv').style.display!=='none')requestAnimationFrame(animTut);
+      else tc2._anim=false;
+    }
+    requestAnimationFrame(animTut);
+  }
+}
+document.getElementById('btnTutorial').onclick=function(){
+  unlockAudio();
+  renderTutorial();
+  document.getElementById('tutorialOv').style.display='block';
+};
+
 function showTitle(){
   gameActive=false;
   document.getElementById('titleScreen').style.display='flex';
@@ -1552,7 +1943,12 @@ function showTitle(){
 }
 document.getElementById('btnPlay').onclick=function(){unlockAudio();document.getElementById('titleScreen').style.display='none';startGame();};
 
-function startGame(){initGame();}
+function startGame(){
+  initGame();
+  setTimeout(function(){
+    showAlert('💥 2-MINUTE WARMUP! Blast asteroids & stock up. Cores locked until race starts!', 5000);
+  }, 500);
+}
 
 /* ═══════════════ DRAW FUNCTIONS ═══════════════ */
 function drawShipShape(x,y,angle,col,thrusting,invincible,trail,carrying){
@@ -1609,12 +2005,13 @@ function drawRacePads(){
     var lbl=i===0?'YOUR PAD':(aiShips[i-1]?(aiShips[i-1].name+' PAD'):'');
     ctx.fillText(lbl,pd.x,pd.y-hh-10);
   }
-  if(racerOrder.length>0){
-    ctx.save();ctx.setLineDash([12,10]);ctx.strokeStyle='rgba(180,0,255,0.35)';ctx.lineWidth=3;
-    ctx.beginPath();
-    for(var i=0;i<victoryPath.length;i++){if(i===0)ctx.moveTo(victoryPath[i].x,victoryPath[i].y);else ctx.lineTo(victoryPath[i].x,victoryPath[i].y);}
-    ctx.closePath();ctx.stroke();ctx.setLineDash([]);ctx.restore();
-  }
+  // Always draw the victory circuit faintly; brighter during victory
+  var vpAlpha=raceState==='victory'?0.55:0.12;
+  var vpPulse=0.7+Math.sin(Date.now()*0.002)*0.3;
+  ctx.save();ctx.setLineDash([16,12]);ctx.strokeStyle='rgba(180,0,255,'+(vpAlpha*vpPulse)+')';ctx.lineWidth=raceState==='victory'?4:2;
+  ctx.beginPath();
+  for(var i=0;i<victoryPath.length;i++){if(i===0)ctx.moveTo(victoryPath[i].x,victoryPath[i].y);else ctx.lineTo(victoryPath[i].x,victoryPath[i].y);}
+  ctx.closePath();ctx.stroke();ctx.setLineDash([]);ctx.restore();
 }
 
 function drawNexus(nx){
@@ -1666,16 +2063,22 @@ function drawAlien(al){
   ctx.restore();
 }
 function drawCenterStation(){
-  var sp=STARPORT,pulse=Math.sin(Date.now()*0.002)*0.4+0.6;
+  var pulse=Math.sin(Date.now()*0.002)*0.4+0.6;
+  // Connector line between starport and recharge station
+  ctx.save();ctx.setLineDash([6,10]);ctx.strokeStyle='rgba(150,150,255,0.2)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(STARPORT.x,STARPORT.y+58);ctx.lineTo(RECHARGE.x,RECHARGE.y-60);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // STARPORT hexagon (top)
+  var sp=STARPORT;
   ctx.save();
   ctx.strokeStyle='rgba(255,200,50,'+pulse+')';ctx.lineWidth=2.5;
   ctx.beginPath();
-  for(var k=0;k<6;k++){var sa=(k/6)*Math.PI*2-Math.PI/6;ctx.lineTo(sp.x+Math.cos(sa)*60,sp.y+Math.sin(sa)*60);}
+  for(var k=0;k<6;k++){var sa=(k/6)*Math.PI*2-Math.PI/6;ctx.lineTo(sp.x+Math.cos(sa)*55,sp.y+Math.sin(sa)*55);}
   ctx.closePath();ctx.stroke();
-  ctx.fillStyle='rgba(255,200,50,0.06)';ctx.fill();
-  ctx.shadowColor='rgba(255,200,50,0.6)';ctx.shadowBlur=18;
-  ctx.fillStyle='rgba(255,200,50,0.9)';ctx.font='bold 13px Orbitron,monospace';ctx.textAlign='center';
-  ctx.fillText('CENTER',sp.x,sp.y-6);ctx.fillText('STATION',sp.x,sp.y+13);
+  ctx.fillStyle='rgba(255,200,50,0.07)';ctx.fill();
+  ctx.shadowColor='rgba(255,200,50,0.7)';ctx.shadowBlur=18;
+  ctx.fillStyle='rgba(255,200,50,0.95)';ctx.font='bold 12px Orbitron,monospace';ctx.textAlign='center';
+  ctx.fillText('STARPORT',sp.x,sp.y-4);ctx.fillText('SHOP + BH DROP',sp.x,sp.y+13);
   ctx.restore();
 }
 function drawSpawnZone(){
@@ -1804,10 +2207,13 @@ function drawWorld(){
 
   // Warp cores
   // Draw pad cores for all racers
+  var isWarmup=(raceState==='warmup'||raceState==='countdown');
+  if(isWarmup){ctx.save();ctx.globalAlpha=0.28;}
   var allPR=[ship].concat(aiShips);
   for(var ri=0;ri<allPR.length;ri++){var rr=allPR[ri];if(!rr||!rr.cores)continue;for(var ci2=0;ci2<rr.cores.length;ci2++){if(rr.cores[ci2].alive)drawCore(rr.cores[ci2]);}}
   // Dropped/map cores
   for(var i=0;i<warpCores.length;i++) if(warpCores[i].alive) drawCore(warpCores[i]);
+  if(isWarmup)ctx.restore();
 
   // Asteroids
   for(var i=0;i<asteroids.length;i++) if(asteroids[i].alive) drawAst(asteroids[i]);
@@ -1824,7 +2230,13 @@ function drawWorld(){
     drawShipShape(ai.x,ai.y,ai.angle,ai.color,Math.sqrt(ai.vx*ai.vx+ai.vy*ai.vy)>0.5,ai.invincible,ai.trail,ai.carrying);
     drawShieldRing(ai.x,ai.y,ai.shieldHp,ai.shieldMax);
     ctx.globalAlpha=1;
-    if(ai.victoryLap){ctx.beginPath();ctx.arc(ai.x,ai.y,22,0,Math.PI*2);ctx.strokeStyle='rgba(180,0,255,0.7)';ctx.lineWidth=4;ctx.stroke();}
+    if(ai.victoryLap){
+      var vring=0.7+Math.sin(Date.now()*0.005)*0.3;
+      ctx.beginPath();ctx.arc(ai.x,ai.y,22,0,Math.PI*2);
+      ctx.strokeStyle='rgba(180,0,255,'+vring+')';ctx.lineWidth=4;ctx.stroke();
+      if(ai.finishPlace===1){ctx.beginPath();ctx.arc(ai.x,ai.y,32,0,Math.PI*2);
+        ctx.strokeStyle='rgba(255,200,50,'+vring*0.6+')';ctx.lineWidth=2;ctx.stroke();}
+    }
     var typeIcons={'tractor':'🌀','thief':'🕵','stealth':'👻','tank':'🛡','shooter':'🎯','blocker':'🚧','speedster':'⚡','collector':''};
     ctx.font='bold 10px Orbitron,monospace';ctx.textAlign='center';ctx.fillStyle=ai.color;
     ctx.fillText(ai.name,ai.x,ai.y-36);
@@ -1846,6 +2258,21 @@ function drawWorld(){
   if(ship.alive){
     drawShipShape(ship.x,ship.y,ship.angle,'rgba(0,212,255,0.95)',ship.thrusting,ship.invincible,ship.trail,ship.carrying);
     drawShieldRing(ship.x,ship.y,ship.shieldHp,ship.shieldMax);
+    // Victory lap celebration rings
+    if(ship.victoryLap){
+      var pr=0.8+Math.sin(Date.now()*0.005)*0.2;
+      ctx.beginPath();ctx.arc(ship.x,ship.y,26,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,200,50,'+pr+')';ctx.lineWidth=5;ctx.stroke();
+      ctx.beginPath();ctx.arc(ship.x,ship.y,40,0,Math.PI*2);
+      ctx.strokeStyle='rgba(180,0,255,'+(pr*0.5)+')';ctx.lineWidth=2.5;ctx.stroke();
+      // Label
+      ctx.save();
+      ctx.globalAlpha=pr;
+      ctx.font='bold 22px Orbitron,monospace';ctx.textAlign='center';
+      ctx.fillStyle='#ffdd44';ctx.shadowColor='rgba(255,200,50,1)';ctx.shadowBlur=18;
+      ctx.fillText('🏆 VICTORY LAP',ship.x,ship.y-52);
+      ctx.restore();
+    }
     // Active shield powerup ring
     if(activePowerups.shield>0){ctx.beginPath();ctx.arc(ship.x,ship.y,34,0,Math.PI*2);ctx.strokeStyle='rgba(0,170,255,0.7)';ctx.lineWidth=3;ctx.stroke();}
     // Arrow to nearest uncollected core or to matching nexus
@@ -1883,6 +2310,28 @@ function drawWorld(){
   drawBlackHole();
   drawBoss();
 
+  // Warmup / countdown overlay
+  if(raceState==='warmup'||raceState==='countdown'){
+    ctx.save();ctx.setTransform(1,0,0,1,0,0);
+    var sw=canvas.width,sh=canvas.height;
+    if(raceState==='warmup'){
+      var secsLeft=Math.ceil(warmupTimer/1000);
+      ctx.fillStyle='rgba(0,0,0,0.55)';ctx.fillRect(sw/2-140,14,280,42);
+      ctx.font='bold 18px Orbitron,monospace';ctx.textAlign='center';
+      ctx.fillStyle='#ffdd00';ctx.shadowColor='rgba(255,220,0,0.9)';ctx.shadowBlur=14;
+      ctx.fillText('🕐 WARMUP  '+secsLeft+'s remaining', sw/2, 43);
+      ctx.shadowBlur=0;
+    } else {
+      var bigTxt=countdownPhase>0?String(countdownPhase):'GO!';
+      ctx.font='bold 110px Orbitron,monospace';ctx.textAlign='center';
+      ctx.fillStyle=countdownPhase>0?'#ff4444':'#44ff88';
+      ctx.shadowColor=countdownPhase>0?'rgba(255,50,50,0.9)':'rgba(50,255,100,0.9)';ctx.shadowBlur=50;
+      ctx.fillText(bigTxt, sw/2, sh*0.52);
+      ctx.shadowBlur=0;
+    }
+    ctx.restore();
+  }
+
   // Particles
   for(var i=0;i<particles.length;i++){var p=particles[i];ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.1,p.r*p.life),0,Math.PI*2);ctx.fillStyle='rgba('+p.rgb+','+p.life+')';ctx.fill();}
 
@@ -1891,8 +2340,37 @@ function drawWorld(){
 
 /* ═══════════════ MAIN LOOP ═══════════════ */
 function update(dt){
+  if(!gameActive&&raceState!=='warmup'&&raceState!=='countdown')return;
   if(!gameActive)return;
   if(alertTimer>0){alertTimer-=dt;if(alertTimer<=0)document.getElementById('alertBar').classList.remove('show');}
+  // Warmup countdown
+  if(raceState==='warmup'){
+    warmupTimer-=dt;
+    if(warmupTimer<=0){
+      raceState='countdown';countdownPhase=3;countdownTimer=1000;
+      sfxCountdownBeep(3);
+      showAlert('🚨 RACE STARTS IN 3...', 900);
+    } else if(warmupTimer<=10000&&Math.floor(warmupTimer/1000)!==Math.floor((warmupTimer+dt)/1000)){
+      // last 10 seconds: alert each second
+      var secs=Math.ceil(warmupTimer/1000);
+      showAlert('Race starts in '+secs+'...', 800);
+    }
+  }
+  if(raceState==='countdown'){
+    countdownTimer-=dt;
+    if(countdownTimer<=0){
+      countdownPhase--;
+      if(countdownPhase>0){
+        countdownTimer=1000;
+        sfxCountdownBeep(countdownPhase);
+        showAlert(countdownPhase===2?'🚨 2...':'🚨 1...', 900);
+      } else {
+        raceState='racing';
+        sfxCountdownBeep(0);
+        showAlert('🟢 GO GO GO!!!', 2500);
+      }
+    }
+  }
   updateCamera();
   updatePlayer(dt);
   for(var i=0;i<aiShips.length;i++) updateAI(aiShips[i],dt);
@@ -1904,6 +2382,17 @@ function update(dt){
   updateAsteroids(dt);
   updateProjectiles(dt);
   updateRecharge(dt);
+  // Victory timer
+  if(victoryTimer>0){
+    victoryTimer-=dt;
+    if(victoryTimer<=0){victoryTimer=0;endVictoryLap();}
+    // Update skip button glow based on time remaining
+    var skipEl=document.getElementById('skipVictoryBtn');
+    if(skipEl&&skipEl.style.display!=='none'){
+      var pct=1-(victoryTimer/20000);
+      skipEl.style.opacity=0.4+pct*0.6;
+    }
+  }
   // Update particles
   for(var i=particles.length-1;i>=0;i--){var p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vx*=0.97;p.vy*=0.97;p.life-=p.decay*(dt/16);if(p.life<=0)particles.splice(i,1);}
 }
