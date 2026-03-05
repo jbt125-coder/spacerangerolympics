@@ -178,8 +178,10 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <!-- Win -->
 
-<div id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:6%;left:50%;transform:translateX(-50%);z-index:30;padding:12px 36px;font-family:Orbitron,monospace;font-size:clamp(11px,1.8vw,16px);letter-spacing:3px;color:#fff;background:rgba(0,0,0,0.5);border:2px solid rgba(180,0,255,0.6);border-radius:6px;cursor:pointer;opacity:0.4;animation:skipGlow 3s ease-in-out infinite;">&#x23E9; SKIP VICTORY LAP</div>
-<style>@keyframes skipGlow{0%,100%{box-shadow:0 0 8px rgba(180,0,255,0.3);border-color:rgba(180,0,255,0.4);}50%{box-shadow:0 0 28px rgba(180,0,255,0.9);border-color:rgba(220,80,255,0.9);}}</style>
+<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:22%;left:50%;transform:translateX(-50%);z-index:200;padding:14px 56px;font-family:Orbitron,monospace;font-size:clamp(13px,2.5vw,18px);letter-spacing:6px;color:rgba(210,100,255,0.85);background:rgba(8,0,18,0.7);border:1.5px solid rgba(180,0,255,0.5);border-radius:4px;cursor:pointer;animation:skipGlow 2.5s ease-in-out infinite;">SKIP</button>
+
+<style>@keyframes skipGlow{0%,100%{box-shadow:0 0 6px rgba(0,212,255,0.2);border-color:rgba(0,212,255,0.25);}50%{box-shadow:0 0 22px rgba(0,212,255,0.6);border-color:rgba(0,212,255,0.7);}}</style>
+
 <div id="winScreen">
   <div class="win-title" id="winTitle">YOU WIN!</div>
   <div class="win-sub" id="winSub">ALL 6 WARP CORES DEPOSITED</div>
@@ -1685,6 +1687,7 @@ var countdownPhase=0; // 3,2,1,0 during countdown
 var countdownTimer=0;
 var victoryWaypoints=[];
 var victoryBossKilled=false;
+var _skipBtn={x:0,y:0,w:0,h:0,pulse:0,visible:false};
 var victoryBoss={active:false,alive:false,x:6200,y:200,hp:0,maxHp:0,pulse:0,invincible:0,hueShift:0,fireTimer:0};
 
 function showVictoryResults(){
@@ -1706,7 +1709,8 @@ function showVictoryResults(){
   window._winLines=lines;
   // Start 20-second victory celebration timer
   victoryTimer=20000;
-  document.getElementById('skipVictoryBtn').style.display='block';
+  document.getElementById('skipVictoryBtn').style.display='inline-block';
+  _skipBtn.visible=true;_skipBtn.pulse=0;
   // Launch all racers on victory parade
   for(var i=0;i<aiShips.length;i++){
     var ai2=aiShips[i];if(ai2.isPatroller)continue;
@@ -1756,9 +1760,11 @@ function killVictoryBoss(){
   victoryBoss.alive=false;
   spawnParts(victoryBoss.x,victoryBoss.y,70,['#ff00ff','#ffff00','#00ffff','#ff8800','#ffffff'],6);
   sfxBoom();
-  showAlert('💥 VICTORY BOSS DOWN! Head to the finish!',3500);
+  showAlert('💥 VICTORY BOSS DOWN!',2000);
   ship.victoryPhase='returnToPad';
   for(var i=0;i<aiShips.length;i++){if(aiShips[i].victoryLap)aiShips[i].victoryPhase='returnToPad';}
+  // Auto-advance to results after short delay
+  setTimeout(function(){if(raceState==='victory'){victoryTimer=0;endVictoryLap();}},3500);
 }
 function drawVictoryBoss(){
   var vb=victoryBoss;if(!vb.active||!vb.alive)return;
@@ -1783,6 +1789,7 @@ function drawVictoryBoss(){
 }
 
 function endVictoryLap(){
+  _skipBtn.visible=false;
   document.getElementById('skipVictoryBtn').style.display='none';
   document.getElementById('winTitle').textContent=window._winTitle||'🏆 RACE OVER!';
   document.getElementById('winTitle').style.fontSize='clamp(18px,4vw,36px)';
@@ -2396,6 +2403,25 @@ function drawWorld(){
     ctx.restore();
   }
 
+  // Victory SKIP button drawn below player ship
+  if(raceState==='victory'&&_skipBtn.visible){
+    _skipBtn.pulse+=0.035;
+    var _sp=0.45+0.45*Math.sin(_skipBtn.pulse);
+    var _sx=(ship.x-CAM.x)*CAM.zoom+VW/2;
+    var _sy=(ship.y-CAM.y)*CAM.zoom+VH/2;
+    var _bw=100,_bh=30;
+    _skipBtn.x=_sx-_bw/2;_skipBtn.y=_sy+52;
+    _skipBtn.w=_bw;_skipBtn.h=_bh;
+    ctx.save();ctx.setTransform(1,0,0,1,0,0);
+    ctx.shadowColor='rgba(180,0,255,'+(0.25+0.65*_sp)+')';ctx.shadowBlur=16+16*_sp;
+    ctx.fillStyle='rgba(8,0,18,'+(0.5+0.2*_sp)+')';ctx.strokeStyle='rgba(180,0,255,'+(0.35+0.55*_sp)+')';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.roundRect(_skipBtn.x,_skipBtn.y,_bw,_bh,5);ctx.fill();ctx.stroke();
+    ctx.shadowColor='rgba(220,80,255,'+(0.5+0.5*_sp)+')';ctx.shadowBlur=8+8*_sp;
+    ctx.font='bold 12px Orbitron,monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle='rgba(210,100,255,'+(0.6+0.4*_sp)+')';ctx.fillText('SKIP',_skipBtn.x+_bw/2,_skipBtn.y+_bh/2);
+    ctx.restore();
+  }
+
   // Particles
   for(var i=0;i<particles.length;i++){var p=particles[i];ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.1,p.r*p.life),0,Math.PI*2);ctx.fillStyle='rgba('+p.rgb+','+p.life+')';ctx.fill();}
 
@@ -2449,12 +2475,7 @@ function update(dt){
   if(victoryTimer>0){
     victoryTimer-=dt;
     if(victoryTimer<=0){victoryTimer=0;endVictoryLap();}
-    // Update skip button glow based on time remaining
-    var skipEl=document.getElementById('skipVictoryBtn');
-    if(skipEl&&skipEl.style.display!=='none'){
-      var pct=1-(victoryTimer/20000);
-      skipEl.style.opacity=0.4+pct*0.6;
-    }
+
   }
   // Update particles
   for(var i=particles.length-1;i>=0;i--){var p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vx*=0.97;p.vy*=0.97;p.life-=p.decay*(dt/16);if(p.life<=0)particles.splice(i,1);}
@@ -2487,6 +2508,22 @@ if(isTouchDev){
 }
 
 resize();lastTime=performance.now();requestAnimationFrame(loop);
+// Victory lap: ANY click/touch anywhere exits
+document.addEventListener('click',function(e){
+  if(raceState==='victory'&&_skipBtn.visible){
+    victoryTimer=0;endVictoryLap();
+  }
+});
+document.addEventListener('touchend',function(e){
+  if(raceState==='victory'&&_skipBtn.visible){
+    victoryTimer=0;endVictoryLap();
+  }
+},false);
+document.addEventListener('keydown',function(e){
+  if(raceState==='victory'&&_skipBtn.visible){
+    victoryTimer=0;endVictoryLap();
+  }
+});
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
 </script>
 
