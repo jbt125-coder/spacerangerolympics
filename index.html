@@ -1724,15 +1724,14 @@ function showVictoryResults(){
   window._winLines=lines;
   // Start 20-second victory celebration timer
   victoryTimer=20000;
-  _skipBtn.visible=false;
-  document.getElementById('skipVictoryBtn').style.display='none';
-  // Show SKIP after 8 seconds so player sees the celebration first
-  setTimeout(function(){
-    if(raceState==='victory'){
-      document.getElementById('skipVictoryBtn').style.display='inline-block';
-      _skipBtn.visible=true;_skipBtn.pulse=0;
-    }
-  }, 8000);
+  _skipBtn.visible=true;_skipBtn.pulse=0;
+  // Show immediately but CSS fades it in after 8s delay
+  var sv=document.getElementById('skipVictoryBtn');
+  sv.style.display='inline-block';
+  sv.style.opacity='0';
+  sv.style.transition='opacity 1.5s ease-in';
+  sv.style.animationDelay='0s';
+  setTimeout(function(){sv.style.opacity='1';},8000);
   // Launch all racers on victory parade
   for(var i=0;i<aiShips.length;i++){
     var ai2=aiShips[i];if(ai2.isPatroller)continue;
