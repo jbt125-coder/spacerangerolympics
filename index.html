@@ -178,7 +178,7 @@ body{font-family:'Orbitron','Courier New',monospace;touch-action:none;user-selec
 
 <!-- Win -->
 
-<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:3%;right:3%;z-index:999;padding:8px 22px;font-family:Orbitron,monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:4px;color:rgba(180,0,255,0.55);background:rgba(0,0,0,0.3);border:1px solid rgba(180,0,255,0.3);border-radius:4px;cursor:pointer;animation:skipGlow 3s ease-in-out infinite;">SKIP</button>
+<button id="skipVictoryBtn" onclick="victoryTimer=0;endVictoryLap();" style="display:none;position:fixed;bottom:3%;right:3%;z-index:999;padding:8px 22px;font-family:Orbitron,monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:4px;color:rgba(220,120,255,0.9);background:rgba(10,0,20,0.75);border:1.5px solid rgba(180,0,255,0.6);border-radius:4px;cursor:pointer;animation:skipGlow 3s ease-in-out infinite;">SKIP</button>
 
 <style>@keyframes skipGlow{0%,100%{box-shadow:0 0 6px rgba(0,212,255,0.2);border-color:rgba(0,212,255,0.25);}50%{box-shadow:0 0 22px rgba(0,212,255,0.6);border-color:rgba(0,212,255,0.7);}}</style>
 
@@ -1785,8 +1785,7 @@ function killVictoryBoss(){
   showAlert('💥 VICTORY BOSS DOWN!',2000);
   ship.victoryPhase='returnToPad';
   for(var i=0;i<aiShips.length;i++){if(aiShips[i].victoryLap)aiShips[i].victoryPhase='returnToPad';}
-  // Auto-advance to results after short delay
-  setTimeout(function(){if(raceState==='victory'){victoryTimer=0;endVictoryLap();}},3500);
+  // Boss killed - SKIP button will appear after 8s for player to proceed
 }
 function drawVictoryBoss(){
   var vb=victoryBoss;if(!vb.active||!vb.alive)return;
